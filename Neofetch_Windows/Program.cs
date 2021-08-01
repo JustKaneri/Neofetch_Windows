@@ -16,7 +16,6 @@ namespace Neofetch_Windows
         {
             ShowInfo();
 
-            
             Console.ForegroundColor = ConsoleColor.White;
             Console.SetCursorPosition(0, Console.CursorTop + 10);
         }
@@ -108,6 +107,7 @@ namespace Neofetch_Windows
             {
                 info.Add(item["Description"].ToString());
                 info.Add(int.Parse(item["AdapterRAM"].ToString()) / 1024 / 1024 + " Mb");
+                break;
             }
 
             searcher5 =new ManagementObjectSearcher("SELECT TotalVisibleMemorySize,FreePhysicalMemory FROM Win32_OperatingSystem");
