@@ -64,18 +64,18 @@ namespace Neofetch_Windows
             info.Add("");
 
 
-            ManagementObjectSearcher searcher5 = new ManagementObjectSearcher("root\\CIMV2","SELECT * FROM Win32_OperatingSystem");
-            foreach (var item in searcher5.Get())
+            ManagementObjectSearcher os = new ManagementObjectSearcher("root\\CIMV2","SELECT * FROM Win32_OperatingSystem");
+            foreach (var item in os.Get())
             {
                 info.Add(item["Name"].ToString().Substring(0,22));
                 info.Add(item["Version"].ToString());
             }
 
-            
-            searcher5 = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_NetworkAdapterConfiguration");
+
+            ManagementObjectSearcher net = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_NetworkAdapterConfiguration");
 
             string ip = "";
-            foreach (var item in searcher5.Get())
+            foreach (var item in net.Get())
             {
                 if (item["IPAddress"] != null)
                 {
@@ -93,26 +93,26 @@ namespace Neofetch_Windows
 
             info.Add(ip);
 
-            searcher5 =  new ManagementObjectSearcher("root\\CIMV2",    "SELECT * FROM Win32_Processor");
+            ManagementObjectSearcher proccesor =  new ManagementObjectSearcher("root\\CIMV2",    "SELECT * FROM Win32_Processor");
 
-            foreach (var item in searcher5.Get())
+            foreach (var item in proccesor.Get())
             {
                 info.Add(item["Name"].ToString());
                 info.Add(item["NumberOfCores"].ToString());
             }
 
 
-            searcher5 =  new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_VideoController");
-            foreach (var item in searcher5.Get())
+            ManagementObjectSearcher video =  new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_VideoController");
+            foreach (var item in video.Get())
             {
                 info.Add(item["Description"].ToString());
-                info.Add(int.Parse(item["AdapterRAM"].ToString()) / 1024 / 1024 + " Mb");
+                info.Add(long.Parse(item["AdapterRAM"].ToString()) / 1024 / 1024 + " Mb");
                 break;
             }
 
-            searcher5 =new ManagementObjectSearcher("SELECT TotalVisibleMemorySize,FreePhysicalMemory FROM Win32_OperatingSystem");
+            ManagementObjectSearcher memory = new ManagementObjectSearcher("SELECT TotalVisibleMemorySize,FreePhysicalMemory FROM Win32_OperatingSystem");
 
-            foreach (var item in searcher5.Get())
+            foreach (var item in memory.Get())
             {
                 ulong totalRam = Convert.ToUInt64(item["TotalVisibleMemorySize"]);
                 ulong busyRam = totalRam - Convert.ToUInt64(item["FreePhysicalMemory"]);
